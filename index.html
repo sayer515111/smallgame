@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أنقذ البسّات 😺</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: 'Tahoma', sans-serif;
+      background-color: #cceeff;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 6vw;
+      padding: 10px;
+    }
+
+    #game-area {
+      width: 90vw;
+      max-width: 500px;
+      height: 80vh;
+      margin: 0 auto;
+      border: 3px solid #333;
+      position: relative;
+      background: linear-gradient(#87ceeb, #f0e68c);
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .cat {
+      position: absolute;
+      font-size: 10vw;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #score, #message {
+      font-size: 5vw;
+      margin-top: 8px;
+    }
+
+    #message {
+      color: darkred;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚨أنقذ البسّس!</h1>
+  <div id="game-area"></div>
+  <p id="score">النقاط: 0</p>
+  <p id="message"></p>
+
+  <script>
+    const gameArea = document.getElementById("game-area");
+    const scoreDisplay = document.getElementById("score");
+    const message = document.getElementById("message");
+    let score = 0;
+
+    function createCat() {
+      const cat = document.createElement("div");
+      cat.classList.add("cat");
+      cat.textContent = "😺";
+
+      // مكان عشوائي
+      const x = Math.floor(Math.random() * (gameArea.clientWidth - 50));
+      cat.style.left = x + "px";
+      cat.style.top = "0px";
+
+      gameArea.appendChild(cat);
+
+      let speed = 1 + Math.random() * 2.5;
+
+      const fall = setInterval(() => {
+        const top = parseFloat(cat.style.top);
+        cat.style.top = (top + speed) + "px";
+
+        if (top + 50 >= gameArea.clientHeight) {
+          clearInterval(fall);
+          gameArea.removeChild(cat);
+          message.textContent = "ضاعت بسّة 😿";
+          setTimeout(() => message.textContent = "", 1000);
+        }
+      }, 20);
+
+      cat.addEventListener("touchstart", () => {
+        clearInterval(fall);
+        gameArea.removeChild(cat);
+        score++;
+        scoreDisplay.textContent = "النقاط: " + score;
+        message.textContent = "أنقذتها! 😻";
+        setTimeout(() => message.textContent = "", 1000);
+      });
+
+      // دعم للكمبيوتر (الماوس)
+      cat.addEventListener("click", () => {
+        clearInterval(fall);
+        gameArea.removeChild(cat);
+        score++;
+        scoreDisplay.textContent = "النقاط: " + score;
+        message.textContent = "أنقذتها! 😻";
+        setTimeout(() => message.textContent = "", 1000);
+      });
+    }
+
+    // أول بسّة
+    createCat();
+
+    // بسّة جديدة كل 2.5 ثانية
+    setInterval(() => {
+      createCat();
+    }, 2500);
+  </script>
+</body>
+</html>
